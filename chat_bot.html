@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hanuman AI - Sports Assistant | Hanuman Sports</title>
+        <meta name="theme-color" content="#00F0FF">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="logo.png" sizes="192x192">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta name="description" content="Chat with Hanuman AI - Your personal sports assistant for equipment recommendations, pricing, and expert advice from Hanuman Sports in Mysore.">
@@ -89,18 +92,25 @@
             100% { transform: translate(0, 0) rotate(360deg); }
         }
 
-        /* Scrollbar */
+        /* Enhanced Futuristic Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
+            background: var(--secondary);
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--secondary);
+            background: rgba(10, 14, 23, 0.8);
+            border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb {
             background: var(--primary);
             border-radius: 10px;
+            border: 2px solid var(--secondary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00c5d4;
         }
 
         /* Header */
@@ -246,73 +256,6 @@
             color: var(--primary);
             font-size: 1rem;
             width: 20px;
-        }
-
-        .sports-list {
-            list-style: none;
-        }
-
-        .sports-list li {
-            padding: 0.7rem 1rem;
-            border-left: 2px solid transparent;
-            margin-bottom: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-        }
-
-        .sports-list li:hover {
-            border-left-color: var(--primary);
-            background: rgba(0, 240, 255, 0.05);
-        }
-
-        .sports-list li i {
-            color: var(--primary);
-            font-size: 1rem;
-            width: 20px;
-        }
-
-        .info-box {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(0, 240, 255, 0.02));
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            border-radius: 12px;
-            padding: 1.2rem;
-            margin-top: auto;
-        }
-
-        .info-box h4 {
-            color: var(--primary);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .info-box p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 0.5rem;
-        }
-
-        .info-box .store-hours {
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* Chat Main Area */
-        .chat-main {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: 100%;
         }
 
         /* Chat Agent Header */
@@ -549,12 +492,12 @@
         .send-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border: none;
-            color: var(--secondary);
+            color: var(--light);
             font-size: 1.1rem;
         }
 
         .send-btn:hover {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            background: rgba(0, 240, 255, 0.1);
             box-shadow: 0 0 20px var(--primary);
             transform: translateY(-2px);
         }
@@ -785,7 +728,7 @@
     <header class="chat-header">
         <div class="header-container">
             <div class="logo">
-                <img src="https://pngfre.com/wp-content/uploads/hanuman-36-281x300.png" alt="Hanuman Sports Logo">
+                <img src="logo.png" alt="Hanuman Sports Logo">
                 <div class="logo-text">
                     <h1>HANUMAN AI</h1>
                     <p>Your Sports Assistant</p>
@@ -841,50 +784,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="sidebar-section">
-                <h3><i class="fas fa-sports"></i> SPORTS CATEGORIES</h3>
-                <ul class="sports-list">
-                    <li data-query="Cricket bats and gear">
-                        <i class="fas fa-baseball-ball"></i>
-                        <span>Cricket</span>
-                    </li>
-                    <li data-query="Badminton rackets and shuttlecocks">
-                        <i class="fas fa-table-tennis"></i>
-                        <span>Badminton</span>
-                    </li>
-                    <li data-query="Football boots and balls">
-                        <i class="fas fa-futbol"></i>
-                        <span>Football</span>
-                    </li>
-                    <li data-query="Volleyball equipment">
-                        <i class="fas fa-volleyball-ball"></i>
-                        <span>Volleyball</span>
-                    </li>
-                    <li data-query="Basketball gear">
-                        <i class="fas fa-basketball-ball"></i>
-                        <span>Basketball</span>
-                    </li>
-                    <li data-query="Tennis rackets and balls">
-                        <i class="fas fa-tennis-ball"></i>
-                        <span>Tennis</span>
-                    </li>
-                    <li data-query="Gym and fitness equipment">
-                        <i class="fas fa-dumbbell"></i>
-                        <span>Gym & Fitness</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="info-box">
-                <h4><i class="fas fa-store"></i> HANUMAN SPORTS</h4>
-                <p><i class="fas fa-map-pin"></i> 8JR8+72 Mysuru, Karnataka</p>
-                <p><i class="fas fa-phone"></i> +91 9538452672</p>
-                <div class="store-hours">
-                    <i class="fas fa-clock"></i>
-                    <span>Mon-Sat: 9AM-8PM | Sun: 10AM-6PM</span>
-                </div>
-            </div>
         </aside>
 
         <!-- Chat Main Area -->
@@ -892,7 +791,7 @@
             <!-- Agent Info -->
             <div class="chat-agent">
                 <div class="agent-avatar">
-                    <img src="https://pngfre.com/wp-content/uploads/hanuman-36-281x300.png" alt="Hanuman AI">
+                    <img src="logo.png" alt="Hanuman AI">
                 </div>
                 <div class="agent-info">
                     <h2>HANUMAN AI ASSISTANT</h2>
@@ -907,16 +806,6 @@
             <div class="messages-area" id="messagesArea">
                 <!-- Messages will be added here dynamically -->
             </div>
-
-            <!-- Input Area -->
-            <div class="input-area">
-                <!-- Suggestion Chips -->
-                <div class="suggestion-chips" id="suggestionChips">
-                    <span class="suggestion-chip" data-query="Best cricket bat for beginners">🏏 Beginner Cricket Bat</span>
-                    <span class="suggestion-chip" data-query="Yonex badminton racket price">🏸 Yonex Rackets</span>
-                    <span class="suggestion-chip" data-query="Football size recommendation">⚽ Football Size Guide</span>
-                    <span class="suggestion-chip" data-query="Sports shoes for running">👟 Running Shoes</span>
-                </div>
 
                 <!-- Input Wrapper -->
                 <div class="input-wrapper">
@@ -949,8 +838,8 @@
     <!-- Welcome Overlay -->
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-card">
-            <img src="https://pngfre.com/wp-content/uploads/hanuman-36-281x300.png" alt="Hanuman AI">
-            <h2>Jai Hanuman! 🙏</h2>
+            <img src="logo.png" alt="Hanuman AI">
+            <h2>Jai Hanuman!</h2>
             <p>Welcome to Hanuman Sports AI Assistant! I'm here to help you find the perfect sports equipment, answer questions about pricing, provide recommendations, and guide you to our store in Mysore. How can I assist you today?</p>
             <button class="welcome-btn" onclick="startChat()">Start Chatting</button>
         </div>

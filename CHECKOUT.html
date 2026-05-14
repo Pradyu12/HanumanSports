@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="theme-color" content="#00F0FF">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="icon" href="https://pngfre.com/wp-content/uploads/hanuman-36-281x300.png" sizes="192x192">
+    <link rel="icon" href="logo.png" sizes="192x192">
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -777,8 +777,7 @@
         .btn {
             display: inline-block;
             background-color: rgba(0, 240, 255, 0.75);
-            color: #000000;
-            /* BLACK text */
+            color: #000000; /* BLACK text */
             padding: 1rem 2rem;
             border-radius: 50px;
             text-decoration: none;
@@ -791,9 +790,9 @@
             box-shadow: 0 0 8px rgba(0, 240, 255, 0.25);
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
-            width: 100%;
             font-size: 1.1rem;
             margin-top: 1.5rem;
+            width: 100%;
         }
 
         .btn::before {
@@ -1266,8 +1265,7 @@
             width: 60px;
             height: 60px;
             background: var(--primary);
-            color: #000000;
-            /* BLACK text */
+            color: var(--white);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1450,11 +1448,6 @@
             color: var(--primary);
         }
 
-        .empty-cart .btn {
-            color: #000000;
-            /* BLACK text */
-        }
-
         .cart-footer {
             padding: 2rem;
             border-top: 1px solid var(--glass-border);
@@ -1470,19 +1463,36 @@
             color: var(--white);
         }
 
-        .cart-total span:last-child {
-            color: var(--primary);
-        }
-
         .cart-footer .btn {
             width: 100%;
             padding: 1rem;
             font-size: 1rem;
-            margin-top: 0;
-            color: #000000;
-            /* BLACK text */
         }
 
+        /* Add to Cart Notification */
+        .add-to-cart-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 240, 255, 0.85);
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 3000;
+        }
+
+        .add-to-cart-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+        
         /* Overlay */
         .overlay {
             position: fixed;
@@ -1594,7 +1604,98 @@
                 font-size: 1.5rem;
             }
         }
+
+        /* ===== GLOBAL BUTTON UPGRADE (ALL BUTTONS) ===== */
+
+        /* Base button style */
+        .btn,
+        .btn-outline,
+        .view-btn,
+        .nav-links a {
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(6px);
+        }
+
+        /* Glow effect base */
+        .btn::before,
+        .btn-outline::before,
+        .view-btn::before,
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        /* Hover glow animation */
+        .btn:hover::before,
+        .btn-outline:hover::before,
+        .view-btn:hover::before,
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+
+        /* ===== PRIMARY BUTTON (CYAN GLOW) ===== */
+        .btn,
+        .nav-links a.active {
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        .btn:hover,
+        .nav-links a:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
+            transform: translateY(-3px);
+        }
+
+        /* ===== OUTLINE BUTTON ===== */
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+        }
+
+        /* ===== VIEW BUTTON (GRID/LIST) ===== */
+        .view-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--white);
+        }
+
+        .view-btn:hover,
+        .view-btn.active {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+        }
+
+        /* ===== ICON COLOR FIX ===== */
+        .nav-links a i {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover i {
+            color: #000;
+        }
     </style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 
 <body>
@@ -1950,7 +2051,7 @@
 
                 <div class="order-summary-line">
                     <span>Shipping</span>
-                    <span id="shipping">₹200</span>
+                    <span id="shipping">₹0</span>
                 </div>
 
                 <div class="order-summary-line">
@@ -2072,7 +2173,7 @@
     <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
-            <h3>Your Cart</h3>
+            <h3>Your Performance Cart</h3>
             <button class="close-cart" id="close-cart">
                 <i class="fas fa-times"></i>
             </button>
@@ -2085,7 +2186,7 @@
                 <span>Total:</span>
                 <span id="cart-total-price">₹0.00</span>
             </div>
-            <a href="checkout.html" class="btn">Proceed to Checkout</a>
+            <a href="checkout.html" class="btn">Proceed to Checkout <i class="fas fa-arrow-right"></i></a>
         </div>
     </div>
 
@@ -2356,7 +2457,7 @@
         const successPopup = document.getElementById('success-popup');
 
         if (placeOrderBtn) {
-            placeOrderBtn.addEventListener('click', function (e) {
+            placeOrderBtn.addEventListener('click', async function (e) {
                 e.preventDefault();
 
                 // Get all required fields in the checkout form
@@ -2415,34 +2516,147 @@
 
                 // Check if cart is empty
                 if (cart.length === 0) {
-                    alert('Your cart is empty! Please add items to your cart before checking out.');
+                    if(window.HSToast)HSToast.error('Your cart is empty! Please add items to your cart before checking out.'); else if(window.HSToast)HSToast.warning('Your cart is empty! Please add items before checkout.');
                     return;
                 }
 
                 if (isValid) {
-                    // Show success popup
-                    successPopup.classList.add('active');
+                    // ✅ Save order to database
+                    const token = localStorage.getItem('token');
 
-                    // Clear cart
-                    cart = [];
-                    saveCart();
-                    updateCartCount();
-                    updateOrderSummary();
-                    renderCartItems();
+                    if (!token) {
+                        if(window.HSToast)HSToast.warning('You must be logged in to place an order. Redirecting to login...'); else if(window.HSToast)HSToast.error('Please login to place an order. Redirecting...');
+                        window.location.href = 'login.html';
+                        return;
+                    }
 
-                    // Clear form fields (optional)
-                    document.querySelectorAll('.checkout-form input').forEach(input => {
-                        if (input.type !== 'checkbox') {
-                            input.value = '';
+                    const activePaymentMethod = document.querySelector('.payment-method.active');
+                    const paymentMethod = activePaymentMethod ? activePaymentMethod.getAttribute('data-method') : 'cod';
+
+                    const shippingAddress = [
+                        document.getElementById('address')?.value || '',
+                        document.getElementById('city')?.value || '',
+                        document.getElementById('state')?.value || '',
+                        document.getElementById('pincode')?.value || ''
+                    ].filter(Boolean).join(', ');
+
+                    const orderItems = cart.map(item => ({
+                        product_id: item.id || item.product_id,
+                        name: item.name,
+                        quantity: item.quantity,
+                        price: item.price
+                    }));
+
+                    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+                    placeOrderBtn.textContent = 'Processing...';
+                    placeOrderBtn.disabled = true;
+                    if(window.HSLoader) HSLoader.show();
+
+                    const finalTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + 200 + Math.round(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.1);
+
+                    // ✅ Handle COD separately
+                    if (paymentMethod === 'cod') {
+                        try {
+                            const response = await fetch('http://localhost:3000/api/orders/create', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                                body: JSON.stringify({ items: orderItems, total: finalTotal, shipping_address: shippingAddress, payment_method: 'cod' })
+                            });
+                            const data = await response.json();
+                            if (data.success) {
+                                successPopup.classList.add('active');
+                                cart = []; saveCart(); updateCartCount(); updateOrderSummary();
+                            } else {
+                                toastError('Notice', 'Order failed: ' + (data.message || 'Unknown error'));
+                                placeOrderBtn.textContent = 'Place Order';
+                                placeOrderBtn.disabled = false;
+                            }
+                        } catch(err) {
+                            if(window.HSToast)HSToast.error('Server error. Make sure node server.js is running.'); else toastError('Notice', 'Server error. Make sure node server.js is running.');
+                            placeOrderBtn.textContent = 'Place Order';
+                            placeOrderBtn.disabled = false;
                         }
-                    });
+                        return;
+                    }
+
+                    // ✅ Razorpay for online payments (card/upi/netbanking)
+                    try {
+                        const rzpRes = await fetch('http://localhost:3000/api/payment/create-order', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                            body: JSON.stringify({ amount: finalTotal })
+                        });
+                        const rzpData = await rzpRes.json();
+
+                        if (!rzpData.success) {
+                            alert('Payment init failed: ' + rzpData.message);
+                            placeOrderBtn.textContent = 'Place Order';
+                            placeOrderBtn.disabled = false;
+                            return;
+                        }
+
+                        const options = {
+                            key: rzpData.keyId,
+                            amount: rzpData.amount,
+                            currency: rzpData.currency,
+                            name: 'Hanuman Sports',
+                            description: 'Sports Equipment Purchase',
+                            order_id: rzpData.razorpayOrderId,
+                            handler: async function(response) {
+                                // Verify payment
+                                const verifyRes = await fetch('http://localhost:3000/api/payment/verify', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                                    body: JSON.stringify({
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                });
+                                const verifyData = await verifyRes.json();
+                                if (verifyData.success) {
+                                    // Save order to DB after payment verified
+                                    await fetch('http://localhost:3000/api/orders/create', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                                        body: JSON.stringify({ items: orderItems, total: finalTotal, shipping_address: shippingAddress, payment_method: paymentMethod })
+                                    });
+                                    successPopup.classList.add('active');
+                                    cart = []; saveCart(); updateCartCount(); updateOrderSummary();
+                                } else {
+                                    if(window.HSToast)HSToast.error('Payment verification failed! Contact support.'); else toastError('Notice', 'Payment verification failed! Contact support.');
+                                }
+                            },
+                            prefill: {
+                                name: localStorage.getItem('userName') || '',
+                                email: localStorage.getItem('userEmail') || ''
+                            },
+                            theme: { color: '#00F0FF' },
+                            modal: {
+                                ondismiss: function() {
+                                    placeOrderBtn.textContent = 'Place Order';
+                                    placeOrderBtn.disabled = false;
+                                }
+                            }
+                        };
+
+                        const rzp = new Razorpay(options);
+                        rzp.open();
+
+                    } catch(err) {
+                        console.error('Razorpay error:', err);
+                        if(window.HSToast)HSToast.error('Payment failed. Make sure node server.js is running.'); else toastError('Notice', 'Payment failed. Make sure node server.js is running.');
+                        placeOrderBtn.textContent = 'Place Order';
+                        placeOrderBtn.disabled = false;
+                    }
 
                 } else {
                     // Scroll to first invalid field
                     if (firstInvalidField) {
                         firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                    alert('Please fill in all required fields');
+                    if(window.HSToast)HSToast.warning('Please fill in all required fields'); else if(window.HSToast)HSToast.warning('Please fill in all required fields');
                 }
             });
         }
@@ -2544,7 +2758,7 @@
 
             // Check if cart is empty
             if (cart.length === 0) {
-                alert('Your cart is empty! Please add items to your cart before checking out.');
+                if(window.HSToast)HSToast.error('Your cart is empty! Please add items to your cart before checking out.'); else if(window.HSToast)HSToast.warning('Your cart is empty! Please add items before checkout.');
                 return;
             }
 
@@ -2560,7 +2774,7 @@
             });
 
             if (!isValid) {
-                alert('Please fill in all required fields first');
+                if(window.HSToast)HSToast.warning('Please fill in all required fields first'); else toastError('Notice', 'Please fill in all required fields first');
                 return;
             }
 
@@ -2585,13 +2799,13 @@
             const phone = otpPhone.value.trim();
 
             if (!phone) {
-                alert('Please enter a phone number');
+                if(window.HSToast)HSToast.warning('Please enter a phone number'); else toastInfo('Notice', 'Please enter a phone number');
                 return;
             }
 
             // Validate phone number (simple validation for demo)
             if (phone.length < 10) {
-                alert('Please enter a valid phone number');
+                if(window.HSToast)HSToast.warning('Please enter a valid phone number'); else toastInfo('Notice', 'Please enter a valid phone number');
                 return;
             }
 
@@ -2649,7 +2863,7 @@
             const enteredOtp = otpCode.value.trim();
 
             if (!enteredOtp) {
-                alert('Please enter OTP');
+                if(window.HSToast)HSToast.warning('Please enter OTP'); else toastInfo('Notice', 'Please enter OTP');
                 return;
             }
 
@@ -2681,7 +2895,7 @@
                 }, 1000);
 
             } else {
-                alert('❌ Invalid OTP. Please try again.');
+                if(window.HSToast)HSToast.error('❌ Invalid OTP. Please try again.'); else toastError('Notice', '❌ Invalid OTP. Please try again.');
                 otpCode.value = '';
                 otpCode.focus();
             }
@@ -2821,13 +3035,14 @@
             document.head.appendChild(notifStyle);
         }
         const sameAddressCheckbox = document.getElementById('sameAddress');
-if (sameAddressCheckbox.checked) {
-    // Manually copy shipping values to billing fields before submitting
-    document.getElementById('billing_address').value = document.getElementById('shipping_address').value;
-    document.getElementById('billing_city').value = document.getElementById('shipping_city').value;
-    // ... repeat for all required fields
-}
+        if (sameAddressCheckbox.checked) {
+            // Manually copy shipping values to billing fields before submitting
+            document.getElementById('billing_address').value = document.getElementById('shipping_address').value;
+            document.getElementById('billing_city').value = document.getElementById('shipping_city').value;
+            // ... repeat for all required fields
+        }
     </script>
+<script src="hs-utils.js"></script>
 </body>
 
 </html>

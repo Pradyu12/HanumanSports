@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="theme-color" content="#00F0FF">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="icon" href="https://pngfre.com/wp-content/uploads/hanuman-36-281x300.png" sizes="192x192">
+    <link rel="icon" href="logo.png" sizes="192x192">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -1378,6 +1378,128 @@
                 padding: 1.5rem;
             }
         }
+        /* ===== GLOBAL BUTTON UPGRADE (ALL BUTTONS) ===== */
+
+/* Base button style */
+.btn,
+.btn-outline,
+.filter-btn,
+.add-to-cart,
+.view-btn,
+.nav-links a {
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+}
+
+/* Glow effect base */
+.btn::before,
+.btn-outline::before,
+.filter-btn::before,
+.add-to-cart::before,
+.view-btn::before,
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+
+/* Hover glow animation */
+.btn:hover::before,
+.btn-outline:hover::before,
+.filter-btn:hover::before,
+.add-to-cart:hover::before,
+.view-btn:hover::before,
+.nav-links a:hover::before {
+    left: 100%;
+}
+
+/* ===== PRIMARY BUTTON (CYAN GLOW) ===== */
+.btn,
+.nav-links a.active {
+    background: rgba(0,240,255,0.15);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 10px rgba(0,240,255,0.3);
+}
+
+.btn:hover,
+.nav-links a:hover {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0,240,255,0.8);
+    transform: translateY(-3px);
+}
+
+/* ===== OUTLINE BUTTON ===== */
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 25px rgba(0,240,255,0.8);
+}
+
+/* ===== FILTER BUTTON ===== */
+.filter-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--white);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 15px rgba(0,240,255,0.6);
+}
+
+/* ===== ADD TO CART BUTTON ===== */
+.add-to-cart {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.add-to-cart:hover {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 18px rgba(0,240,255,0.7);
+}
+
+/* ===== VIEW BUTTON (GRID/LIST) ===== */
+.view-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--white);
+}
+
+.view-btn:hover,
+.view-btn.active {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 15px rgba(0,240,255,0.6);
+}
+
+/* ===== ICON COLOR FIX ===== */
+.nav-links a i {
+    color: var(--primary);
+}
+
+.nav-links a:hover i {
+    color: #000;
+}
     </style>
 </head>
 <body>
@@ -1751,25 +1873,76 @@
             });
         });
 
+        // ✅ Load real orders from DB on page load
+        async function loadMyOrders() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            try {
+                const res = await fetch('http://localhost:3000/api/orders/my-orders', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+                const container = document.getElementById('order-details');
+                if (!container) return;
+
+                if (!data.success || data.orders.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding: 3rem; color: #aaa;">
+                            <i class="fas fa-box-open" style="font-size:3rem; margin-bottom:1rem; color:#00F0FF;"></i>
+                            <h3>No orders yet</h3>
+                            <p>You haven't placed any orders yet.</p>
+                            <a href="index.html" style="color:#00F0FF;">Start Shopping →</a>
+                        </div>`;
+                    return;
+                }
+
+                container.innerHTML = data.orders.map(order => `
+                    <div style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
+                        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
+                            <div>
+                                <div style="font-family:'Orbitron',sans-serif; color:#00F0FF; font-size:0.9rem;">ORDER #${order.order_number}</div>
+                                <div style="color:#aaa; font-size:0.85rem; margin-top:0.3rem;">${new Date(order.created_at).toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'})}</div>
+                            </div>
+                            <div style="text-align:right;">
+                                <span style="background:${order.status==='delivered'?'rgba(0,200,100,0.2)': order.status==='cancelled'?'rgba(255,0,0,0.2)':'rgba(0,240,255,0.2)'}; color:${order.status==='delivered'?'#00c864':order.status==='cancelled'?'#ff4444':'#00F0FF'}; padding:0.3rem 1rem; border-radius:20px; font-size:0.85rem; text-transform:capitalize;">${order.status}</span>
+                                <div style="color:#fff; font-size:1.1rem; font-weight:600; margin-top:0.5rem;">₹${Number(order.total_amount).toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
+                            ${(order.items||[]).map(item => `
+                                <div style="display:flex; justify-content:space-between; padding:0.4rem 0; color:#ccc; font-size:0.9rem;">
+                                    <span>${item.product_name} × ${item.quantity}</span>
+                                    <span>₹${Number(item.price * item.quantity).toLocaleString()}</span>
+                                </div>`).join('')}
+                        </div>
+                        <div style="margin-top:0.8rem; font-size:0.85rem; color:#aaa;">
+                            <i class="fas fa-map-marker-alt" style="color:#00F0FF;"></i> ${order.shipping_address || 'N/A'}
+                            &nbsp;&nbsp;
+                            <i class="fas fa-credit-card" style="color:#00F0FF;"></i> ${order.payment_method || 'COD'}
+                        </div>
+                    </div>`).join('');
+            } catch(e) {
+                console.error('Orders load error:', e);
+            }
+        }
+        loadMyOrders();
+
         // Order Lookup Form
         const lookupForm = document.querySelector('.lookup-form');
         const trackOrderBtn = document.getElementById('track-order-btn');
         
         if (lookupForm) {
-            lookupForm.addEventListener('submit', (e) => {
+            lookupForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
-                const orderId = document.getElementById('order-id').value;
-                const email = document.getElementById('email').value;
-                
+                const orderId = document.getElementById('order-id').value.trim();
+                const email = document.getElementById('email').value.trim();
                 if (orderId && email) {
-                    // In a real implementation, you would validate and fetch order details
-                    showNotification(`Order ${orderId} details loaded successfully!`);
-                    
-                    // Scroll to order details section
-                    document.getElementById('order-details').scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    showNotification(`Searching for order ${orderId}...`);
+                    loadMyOrders();
+                    document.getElementById('order-details').scrollIntoView({ behavior: 'smooth' });
                 } else {
                     showNotification('Please enter both Order ID and Email address', 'error');
                 }
@@ -2016,5 +2189,6 @@
             updateCartCount();
         });
     </script>
+<script src="hs-utils.js"></script>
 </body>
 </html>

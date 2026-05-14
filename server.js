@@ -3,18 +3,27 @@ const cors = require('cors');
 const { connectDB } = require('./config/db');
 require('dotenv').config();
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
+// Add your cart/order routes here later
 
-// Connect to Database
+const app = express();
+
+// Middleware
+app.use(cors()); // Prevents frontend connection errors
+app.use(express.json()); // Allows Express to read req.body
+
+// Connect to Database & Sync Tables
 connectDB();
 
+// Serve uploaded images to frontend
+app.use('/uploads', express.static('uploads'));
+
 // Routes
-app.use('/api/products', require('./routes/productRoutes'));
-app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Hanuman Sports Server running on http://localhost:${PORT}`);
 });

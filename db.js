@@ -8,7 +8,8 @@ const sequelize = new Sequelize(
     {
         host: process.env.DB_HOST,
         dialect: 'mysql',
-        port: 3306
+        port: 3306,
+        logging: false // Keeps terminal clean
     }
 );
 
@@ -16,6 +17,9 @@ const connectDB = async () => {
     try {
         await sequelize.authenticate();
         console.log('✅ MySQL Connected via Sequelize');
+        
+        // This command creates tables if they don't exist and enforces the UNIQUE email constraint
+        await sequelize.sync(); 
     } catch (error) {
         console.error('❌ Connection error:', error);
     }

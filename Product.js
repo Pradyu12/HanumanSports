@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db'); // Destructure sequelize here
+const { sequelize } = require('../config/db');
 
 const Product = sequelize.define('Product', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
